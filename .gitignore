@@ -1,0 +1,6 @@
+# Claude Code local config and skill data (not part of the website)
+.claude/
+
+# OS cruft
+Thumbs.db
+desktop.ini
