@@ -889,5 +889,10 @@ a.card { display: block; color: inherit; cursor: pointer; }
   transition: top var(--t-fast) ease;
 }
 .skip-link:focus { top: 0; }
+/* Compliance teaser */
+.teaser-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2rem; align-items: center; }
+@media (max-width: 760px) { .teaser-grid { grid-template-columns: 1fr; } }
+a.reveal:hover .card-link svg { transform: translateX(4px); }
+
 .text-link { font-weight: 600; }
 .text-link:hover { text-decoration: underline; }

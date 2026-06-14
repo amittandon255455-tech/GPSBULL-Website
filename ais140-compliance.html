@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIS-140 Compliance — GPS Bull | RTO Fitness, Mining Royalty &amp; FCI Foodgrain Tracking</title>
+  <meta name="description" content="GPS Bull handles AIS-140 mandate compliance end to end: RTO fitness (VAHAN/Parivahan), mining royalty e-transit (e-Khanij/i3MS) and FCI foodgrain VLTS — devices, backend registration and live tracking.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ---- Compliance page scene styles ---- */
+    .mandate-band { background: var(--surface); }
+    .mandate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    @media (max-width: 800px) { .mandate-grid { grid-template-columns: 1fr; } }
+    .mandate-card { display: flex; gap: 1rem; align-items: flex-start; padding: 1.4rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+    .mandate-card .card-icon { margin: 0; width: 46px; height: 46px; flex-shrink: 0; }
+    .mandate-card .card-icon svg { width: 22px; height: 22px; }
+    .mandate-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+    .mandate-card p { font-size: 0.92rem; color: var(--text-muted); }
+
+    .scene { position: relative; background: var(--navy-900); color: var(--on-dark); overflow: hidden; }
+    .scene .hero-grid-bg { opacity: 0.5; }
+    .scene-label { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 1rem; }
+    .scene-rto .scene-label { color: #85B7EB; }
+    .scene-mine .scene-label { color: #5DCAA5; }
+    .scene-fci .scene-label { color: #FAC775; }
+    .scene h2 { color: #fff; font-size: clamp(1.6rem, 3.2vw, 2.3rem); margin-bottom: 0.9rem; }
+    .scene .lede { color: var(--on-dark-muted); font-size: 1.08rem; max-width: 42rem; }
+    .scene-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }
+    @media (max-width: 900px) { .scene-split { grid-template-columns: 1fr; } }
+
+    .step-list { list-style: none; padding: 0; display: grid; gap: 0.9rem; counter-reset: cstep; margin-top: 1.6rem; }
+    .step-list li { display: flex; gap: 0.9rem; align-items: flex-start; color: var(--on-dark-muted); font-size: 0.98rem; }
+    .step-list li::before { counter-increment: cstep; content: counter(cstep); flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: rgba(37,99,235,0.18); border: 1px solid rgba(59,130,246,0.4); color: #BFDBFE; font-family: var(--font-mono); font-size: 0.82rem; display: inline-flex; align-items: center; justify-content: center; }
+    .step-list strong { color: #fff; font-family: var(--font-heading); font-weight: 500; }
+
+    .panel { background: rgba(255,255,255,0.03); border: 1px solid var(--on-dark-border); border-radius: var(--radius-lg); padding: 1.4rem; }
+
+    /* RTO pipeline */
+    .pipeline { position: relative; display: flex; justify-content: space-between; padding: 0.5rem 0; }
+    .pipeline__track { position: absolute; top: 26px; left: 7%; right: 7%; height: 3px; background: #1B3357; border-radius: 2px; }
+    .pipeline__fill { position: absolute; top: 26px; left: 7%; width: 0; height: 3px; background: #2563EB; border-radius: 2px; }
+    .pstage { position: relative; z-index: 1; width: 25%; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
+    .pstage .pdot { width: 52px; height: 52px; border-radius: 50%; background: #13263F; border: 2px solid #1B3357; display: flex; align-items: center; justify-content: center; color: #64748B; transition: background-color .35s ease, border-color .35s ease, color .35s ease, transform .35s var(--ease-out); }
+    .pstage .pdot svg { width: 24px; height: 24px; }
+    .pstage span { font-size: 0.82rem; color: #64748B; transition: color .35s ease; }
+    .pstage small { display: block; font-family: var(--font-mono); font-size: 0.64rem; color: #475569; }
+    .pstage.on .pdot { background: #2563EB; border-color: #60A5FA; color: #fff; transform: scale(1.06); }
+    .pstage.on span { color: #BFDBFE; }
+
+    /* Scrollytelling pin */
+    .scrolly { position: relative; height: 320vh; background: var(--navy-900); }
+    .scrolly__pin { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; overflow: hidden; }
+    .scrolly__pin .hero-grid-bg { opacity: 0.5; }
+    .mine-hud { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 1rem; }
+    .hud-card { flex: 1; min-width: 150px; background: #13263F; border: 1px solid var(--on-dark-border); border-radius: 12px; padding: 0.8rem 1rem; }
+    .hud-card .k { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; color: #64748B; }
+    .hud-card .v { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600; color: #fff; }
+    .hud-card .v.amt { color: #5DCAA5; }
+    .phase-caption { margin-top: 1.1rem; font-size: 0.98rem; color: #BFDBFE; min-height: 1.5em; }
+    .scroll-cue { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--on-dark-muted); }
+    .scroll-cue svg { width: 16px; height: 16px; animation: cue-bounce 1.8s ease-in-out infinite; }
+    @keyframes cue-bounce { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(4px);} }
+
+    /* FCI track */
+    .fci-track { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.5rem; }
+    .fci-node { text-align: center; flex-shrink: 0; }
+    .fci-node .fbox { width: 48px; height: 48px; border-radius: 12px; background: #1B3357; display: flex; align-items: center; justify-content: center; }
+    .fci-node .fbox svg { width: 24px; height: 24px; }
+    .fci-node small { display: block; font-size: 0.72rem; color: var(--on-dark-muted); margin-top: 0.35rem; }
+    .fci-line { flex: 1; position: relative; height: 48px; }
+    .fci-line__bg { position: absolute; top: 22px; left: 0; right: 0; height: 4px; background: #1B3357; border-radius: 2px; }
+    .fci-line__fill { position: absolute; top: 22px; left: 0; width: 0; height: 4px; background: #FAC775; border-radius: 2px; }
+    .fci-truck { position: absolute; top: 6px; left: 0; transform: translateX(-50%); color: #FAC775; transition: left .1s linear; }
+    .fci-truck svg { width: 30px; height: 30px; }
+
+    .reduced-note { display: none; }
+
+    .portal-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+    .portal-tags span { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--primary-dark); background: var(--surface-alt); border: 1px solid #BFDBFE; padding: 0.3rem 0.75rem; border-radius: 999px; }
+    .scene .portal-tags span { color: #BFDBFE; background: rgba(37,99,235,0.14); border-color: rgba(59,130,246,0.35); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scrolly { height: auto; }
+      .scrolly__pin { position: static; min-height: 0; padding-block: clamp(3rem,7vw,5rem); }
+      .scroll-cue { display: none; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand" aria-label="GPS Bull home">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="36" height="36" rx="10" fill="#2563EB"/>
+        <path d="M20 9c-4.5 0-8 3.4-8 7.8 0 5.8 8 13.2 8 13.2s8-7.4 8-13.2C28 12.4 24.5 9 20 9Z" fill="#F8FAFC"/>
+        <circle cx="20" cy="16.6" r="3.1" fill="#F97316"/>
+      </svg>
+      <span>GPS Bull<small>Locate · Monitor · Protect</small></span>
+    </a>
+    <nav class="nav-menu" id="nav-menu" aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a class="nav-link" href="index.html">Home</a></li>
+        <li><a class="nav-link" href="about.html">About</a></li>
+        <li>
+          <a class="nav-link" href="products.html">Products
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="products/ais-140.html">AIS-140 VLT Device <span>Govt-mandated vehicle tracking</span></a></li>
+            <li><a href="products/gps-tracker.html">GPS Tracker <span>Real-time fleet tracking</span></a></li>
+            <li><a href="products/obd-can-tracker.html">OBD-CAN Tracker <span>Plug-and-play diagnostics</span></a></li>
+            <li><a href="products/fare-meter.html">Taxi-Auto Fare Meter <span>DIMTS-approved metering</span></a></li>
+            <li><a href="products/speed-governor.html">Speed Governor <span>AIS-018 speed limiting</span></a></li>
+            <li><a href="products.html"><strong>View all products →</strong></a></li>
+          </ul>
+        </li>
+        <li><a class="nav-link" href="services.html">Services</a></li>
+        <li><a class="nav-link" href="industries.html">Industries</a></li>
+        <li><a class="nav-link" href="ais140-compliance.html" aria-current="page">Compliance</a></li>
+        <li><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta nav-cta-mobile">
+        <a class="btn btn-primary" href="contact.html">Get a Quote</a>
+        <a class="btn btn-ghost" href="contact.html#visit">Talk to Sales</a>
+      </div>
+    </nav>
+    <div class="nav-cta nav-cta-desktop">
+      <a class="btn btn-primary" href="contact.html">Get a Quote</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="page-hero on-dark">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="container" style="position:relative;">
+      <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li aria-current="page">AIS-140 Compliance</li>
+      </ol>
+      <h1>The AIS-140 mandate, handled end to end</h1>
+      <p class="lede">RTO fitness, mining royalty e-transit and FCI foodgrain movement all run on the same AIS-140 backbone. We supply the certified device, register it to the right government backend, and keep the data flowing — so your vehicles clear every gate.</p>
+      <div class="hero-ctas" style="margin-top:1.8rem;">
+        <a class="btn btn-primary" href="contact.html">Get Compliant
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#rto">See how it works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MANDATE INTRO ============ -->
+  <section class="section mandate-band">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Why AIS-140</p>
+        <h2>One standard behind three compliance regimes</h2>
+        <p>AIS-140 is the Government of India standard for vehicle location tracking. Across transport, mining and food distribution, the same certified device is what makes a vehicle legal to run.</p>
+      </div>
+      <div class="mandate-grid reveal-stagger">
+        <div class="mandate-card">
+          <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+          <div><h3>Certified hardware</h3><p>A 4G VLTD with a valid Type Approval Certificate, embedded eSIM and emergency SOS — the device every backend will accept.</p></div>
+        </div>
+        <div class="mandate-card">
+          <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z"/></svg></span>
+          <div><h3>Backend registration</h3><p>We register each device to the correct state and central backend — VAHAN, mining and FCI VLTS — so it reports in the prescribed format.</p></div>
+        </div>
+        <div class="mandate-card">
+          <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span>
+          <div><h3>Live, audit-ready data</h3><p>Real-time location, geofences, trip records and alerts — the evidence trail that satisfies an RTO inspector, a mining check-gate or an FCI audit.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RTO ============ -->
+  <section class="scene scene-rto section" id="rto" data-scene="rto">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="container" style="position:relative;">
+      <div class="scene-split">
+        <div class="reveal">
+          <p class="scene-label"><span class="pulse-dot"></span> RTO passing &amp; fitness</p>
+          <h2>Clear RTO fitness the first time</h2>
+          <p class="lede">No commercial vehicle gets a fitness certificate without a working, backend-registered AIS-140 device. We make that step disappear — device, eSIM, VAHAN registration and the fitment certificate, all from one desk.</p>
+          <ol class="step-list">
+            <li><span><strong>Fitment.</strong> Certified VLTD installed and sealed by our trained technicians, with the fitment certificate issued on the spot.</span></li>
+            <li><span><strong>Backend registration.</strong> Device activated on the state VLTD backend and mapped to the vehicle on VAHAN / Parivahan.</span></li>
+            <li><span><strong>VAHAN fitness.</strong> Live device data validates against the backend so the fitness (CFx) test clears without a re-visit.</span></li>
+            <li><span><strong>CF issued.</strong> Vehicle is road-legal and already streaming to your fleet dashboard — compliance and visibility in one move.</span></li>
+          </ol>
+          <div class="portal-tags"><span>VAHAN</span><span>Parivahan</span><span>State VLTD backend</span></div>
+        </div>
+        <div class="panel reveal">
+          <div class="pipeline" id="rtoPipeline" aria-hidden="true">
+            <div class="pipeline__track"></div>
+            <div class="pipeline__fill" id="rtoFill"></div>
+            <div class="pstage" data-i="0"><div class="pdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26"/></svg></div><span>Fitment</span><small>DAY 0</small></div>
+            <div class="pstage" data-i="1"><div class="pdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 0 0-.12-1.03l-2.268-9.64a3.375 3.375 0 0 0-3.285-2.602H7.923a3.375 3.375 0 0 0-3.285 2.602l-2.268 9.64a4.5 4.5 0 0 0-.12 1.03v.228m19.5 0a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3m19.5 0a3 3 0 0 0-3-3H5.25a3 3 0 0 0-3 3m16.5 0h.008v.008h-.008v-.008Zm-3 0h.008v.008h-.008v-.008Z"/></svg></div><span>Backend reg.</span><small>VLTD</small></div>
+            <div class="pstage" data-i="2"><div class="pdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div><span>VAHAN fitness</span><small>CFx TEST</small></div>
+            <div class="pstage" data-i="3"><div class="pdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg></div><span>CF issued</span><small>ROAD-LEGAL</small></div>
+          </div>
+          <p class="phase-caption" id="rtoCaption">Scroll to walk a vehicle through fitness certification.</p>
+          <span class="scroll-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0 6.75-6.75M12 19.5l-6.75-6.75"/></svg> scroll</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MINING (scrollytelling) ============ -->
+  <section class="scrolly scene-mine" id="mining" data-scene="mine" aria-label="Mining royalty e-transit trip">
+    <div class="scrolly__pin">
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <div class="container" style="position:relative;width:100%;">
+        <div class="scene-split">
+          <div>
+            <p class="scene-label"><span class="pulse-dot"></span> Mining royalty &amp; e-transit</p>
+            <h2>Every tonne tracked, every royalty captured</h2>
+            <p class="lede">States now clear mineral vehicles only with a GPS-backed e-transit pass. Our AIS-140 device geofences the lease, follows the load to the weighbridge and check-gate, and feeds the trip that drives the royalty calculation.</p>
+            <p class="phase-caption" id="mineCaption">Loaded and sealed at the mine lease.</p>
+            <div class="mine-hud" aria-hidden="true">
+              <div class="hud-card"><div class="k">ROYALTY ACCRUED · 24 T × ₹460</div><div class="v amt" id="mineRoyalty">₹ 0</div></div>
+              <div class="hud-card"><div class="k">E-TRANSIT PASS</div><div class="v" id="minePass" style="font-size:1rem;color:#94A3B8;">awaiting issue</div></div>
+            </div>
+            <div class="portal-tags"><span>e-Khanij</span><span>i3MS · e-Transit Pass</span><span>State mines dept</span></div>
+            <span class="scroll-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0 6.75-6.75M12 19.5l-6.75-6.75"/></svg> scroll to run the trip</span>
+          </div>
+          <div>
+            <svg viewBox="0 0 640 280" style="width:100%;height:auto;" role="img" aria-label="Map showing a mineral vehicle travelling from the mine lease through a weighbridge to a check-gate">
+              <rect x="0" y="0" width="640" height="280" rx="18" fill="#0E1E36" stroke="rgba(148,163,184,0.22)"/>
+              <g stroke="rgba(148,163,184,0.08)">
+                <path d="M0 90h640M0 160h640M0 230h640M150 0v280M330 0v280M500 0v280"/>
+              </g>
+              <path d="M80 220 C 200 220, 220 120, 340 110 S 540 90, 590 60" fill="none" stroke="rgba(148,163,184,0.28)" stroke-width="3.5"/>
+              <path id="mineRoute" d="M80 220 C 200 220, 220 120, 340 110 S 540 90, 590 60" fill="none" stroke="#F97316" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="80" cy="220" r="44" fill="none" stroke="#5DCAA5" stroke-width="1.5" stroke-dasharray="6 7" id="mineGeo"/>
+              <text x="80" y="276" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#94A3B8">MINE LEASE</text>
+              <g><rect x="326" y="92" width="28" height="18" rx="3" fill="#1B3357" stroke="#5DCAA5" stroke-width="1.3"/><text x="340" y="84" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#94A3B8">WEIGHBRIDGE</text></g>
+              <g><rect x="580" y="48" width="18" height="26" rx="2" fill="#1B3357" stroke="#F97316" stroke-width="1.3"/><circle id="mineGate" cx="589" cy="38" r="6" fill="#F97316" opacity="0"/><text x="589" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#94A3B8">CHECK-GATE</text></g>
+              <g id="mineTruck"><rect x="-16" y="-11" width="25" height="16" rx="2.5" fill="#F97316"/><rect x="9" y="-7" width="10" height="12" rx="1.5" fill="#FDBA74"/><circle cx="-9" cy="7" r="3.5" fill="#0A1628" stroke="#fff" stroke-width="1.2"/><circle cx="11" cy="7" r="3.5" fill="#0A1628" stroke="#fff" stroke-width="1.2"/></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FCI ============ -->
+  <section class="scene scene-fci section" id="fci" data-scene="fci">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="container" style="position:relative;">
+      <div class="scene-split">
+        <div class="reveal">
+          <p class="scene-label"><span class="pulse-dot orange"></span> FCI foodgrain movement</p>
+          <h2>From depot to fair price shop, nothing goes missing</h2>
+          <p class="lede">FCI's VLTS tracks subsidised grain in real time to stop diversion and black-marketing. Our AIS-140 devices geofence depots and shops, watch the route, and flag deviations or unscheduled stops the moment they happen.</p>
+          <ol class="step-list">
+            <li><span><strong>Loaded &amp; sealed.</strong> Truck loads at the FCI depot; geofence exit timestamps the dispatch and the seal is logged.</span></li>
+            <li><span><strong>Route monitored.</strong> Live tracking against the assigned route — deviations, long halts and night movement raise instant alerts.</span></li>
+            <li><span><strong>Delivered &amp; verified.</strong> Geofenced arrival at the fair price shop confirms delivery with an intact seal and an audit-ready trip log.</span></li>
+          </ol>
+          <div class="portal-tags"><span>FCI VLTS</span><span>NFSA / PDS</span><span>State food &amp; civil supplies</span></div>
+        </div>
+        <div class="panel reveal">
+          <div class="fci-track" aria-hidden="true">
+            <div class="fci-node"><div class="fbox" style="color:#FAC775"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg></div><small>FCI depot</small></div>
+            <div class="fci-line">
+              <div class="fci-line__bg"></div>
+              <div class="fci-line__fill" id="fciFill"></div>
+              <div class="fci-truck" id="fciTruck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg></div>
+            </div>
+            <div class="fci-node"><div class="fbox" style="color:#5DCAA5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"/></svg></div><small>Fair price shop</small></div>
+          </div>
+          <div class="mine-hud" aria-hidden="true">
+            <div class="hud-card"><div class="k">BAGS DELIVERED</div><div class="v" id="fciBags">0 / 900</div></div>
+            <div class="hud-card"><div class="k">SEAL &amp; ROUTE</div><div class="v" id="fciSeal" style="font-size:1rem;color:#5DCAA5;">intact · on route</div></div>
+          </div>
+          <span class="scroll-cue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0 6.75-6.75M12 19.5l-6.75-6.75"/></svg> scroll</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT WE HANDLE ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">What GPS Bull handles</p>
+        <h2>You sign one purchase order. We carry the compliance.</h2>
+      </div>
+      <div class="card-grid grid-2 reveal-stagger">
+        <ul class="check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span><strong>Certified devices &amp; eSIMs</strong> — AIS-140 VLTD with TAC and embedded multi-operator eSIM, stocked and ready.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span><strong>Fitment &amp; sealing</strong> — trained technicians, depot camps for large fleets, certificates issued on site.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span><strong>Backend registration</strong> — VAHAN, state mining portals and FCI VLTS onboarding handled for you.</span></li>
+        </ul>
+        <ul class="check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span><strong>Live platform &amp; alerts</strong> — geofences, route deviation, SOS and stoppage alerts on web and mobile.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span><strong>Audit-ready reports</strong> — trip logs, royalty trips and delivery proofs exportable for inspectors and audits.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg><span><strong>24×7 support &amp; renewals</strong> — replacement SLAs, SIM renewals and re-certification reminders so you never lapse.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="section" aria-label="Get started">
+    <div class="container">
+      <div class="cta-band on-dark reveal">
+        <h2>Whatever the mandate, we'll get you cleared</h2>
+        <p>Tell us your fleet, your state and which regime applies — RTO, mining or FCI — and we'll return a compliance plan and quote within 48 hours.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="contact.html">Get a Compliance Quote
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="tel:+919911074767">Call +91 99110 74767</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="index.html" class="brand" aria-label="GPS Bull home">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="36" height="36" rx="10" fill="#2563EB"/>
+            <path d="M20 9c-4.5 0-8 3.4-8 7.8 0 5.8 8 13.2 8 13.2s8-7.4 8-13.2C28 12.4 24.5 9 20 9Z" fill="#F8FAFC"/>
+            <circle cx="20" cy="16.6" r="3.1" fill="#F97316"/>
+          </svg>
+          <span>GPS Bull<small>Locate · Monitor · Protect</small></span>
+        </a>
+        <p>IoT-based vehicle tracking and telematics, designed and manufactured in India by Triple7Bull Innovations Private Limited.</p>
+      </div>
+      <nav aria-label="Footer — company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="industries.html">Industries</a></li>
+          <li><a href="ais140-compliance.html">AIS-140 Compliance</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Footer — products">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products/ais-140.html">AIS-140 VLT Device</a></li>
+          <li><a href="products/gps-tracker.html">GPS Tracker</a></li>
+          <li><a href="products/obd-can-tracker.html">OBD-CAN Tracker</a></li>
+          <li><a href="products/fare-meter.html">Taxi-Auto Fare Meter</a></li>
+          <li><a href="products/speed-governor.html">Speed Governor</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h4>Reach Us</h4>
+        <address>
+          <span>Plot No. 33 FF, Meera Enclave,<br>Chowkhandi, New Delhi – 110018</span>
+          <a href="tel:+919911074767">+91 99110 74767</a>
+          <a href="mailto:parvej@gpsbull.com">parvej@gpsbull.com</a>
+        </address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> Triple7Bull Innovations Private Limited. All rights reserved.</p>
+      <p class="mono">ISO 9001:2015 · AIS-140 VLTD TAC · CMMI L3</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+<script src="js/main.js"></script>
+<script src="js/compliance.js" defer></script>
+</body>
+</html>
