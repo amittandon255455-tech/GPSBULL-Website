@@ -82,7 +82,7 @@
     });
   });
 
-  /* ----- Contact form (client-side validation + demo submit) ----- */
+  /* ----- Contact form: Formspree-ready with graceful demo fallback ----- */
   var form = document.getElementById('contact-form');
   if (form) {
     form.addEventListener('submit', function (e) {
@@ -98,18 +98,46 @@
         if (!ok) valid = false;
       });
       if (!valid) return;
+
       var status = form.querySelector('.form-status');
       var submitBtn = form.querySelector('button[type="submit"]');
+      var reset = function () { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; };
+      status.classList.remove('success', 'error');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
-      /* Demo only — wire to your backend or a service like Formspree */
-      setTimeout(function () {
-        status.classList.add('success');
-        status.textContent = 'Thank you. Our team will get back to you within one business day.';
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message';
-      }, 900);
+
+      var endpoint = (form.getAttribute('data-formspree') || '').trim();
+      if (!endpoint) {
+        /* No backend configured yet — demo acknowledgement so the page stays usable. */
+        setTimeout(function () {
+          status.classList.add('success');
+          status.textContent = 'Thanks! (Demo mode — add your Formspree ID in contact.html to send for real.)';
+          form.reset();
+          reset();
+        }, 700);
+        return;
+      }
+
+      var url = endpoint.indexOf('http') === 0 ? endpoint : 'https://formspree.io/f/' + endpoint;
+      var fail = function (msg) {
+        status.classList.add('error');
+        status.textContent = msg || 'Sorry, something went wrong. Please call +91 99110 74767.';
+        reset();
+      };
+      fetch(url, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
+        .then(function (res) {
+          if (res.ok) {
+            status.classList.add('success');
+            status.textContent = 'Thank you. Our team will get back to you within one business day.';
+            form.reset();
+            reset();
+          } else {
+            res.json().then(function (d) {
+              fail(d && d.errors && d.errors[0] && d.errors[0].message);
+            }).catch(function () { fail(); });
+          }
+        })
+        .catch(function () { fail('Network error. Please email parvej@gpsbull.com or call +91 99110 74767.'); });
     });
   }
 
