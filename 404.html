@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found (404) — GPS Bull</title>
+  <meta name="robots" content="noindex">
+  <!-- NOTE: GitHub Pages serves this at any unknown path, so links use the
+       absolute project base /GPSBULL-Website/. If you move to a root domain
+       (e.g. gpsbull.com), replace "/GPSBULL-Website/" with "/" throughout. -->
+  <link rel="icon" href="/GPSBULL-Website/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/GPSBULL-Website/css/styles.css">
+  <style>
+    .nf { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .nf-inner { max-width: 620px; padding: 2rem; }
+    .nf-code { font-family: var(--font-mono); font-size: clamp(4rem, 16vw, 8rem); font-weight: 500; line-height: 1; color: #fff; letter-spacing: -0.02em; }
+    .nf-code .accent { color: var(--accent); }
+    .nf h1 { color: #fff; font-size: clamp(1.4rem, 3.4vw, 2rem); margin: 1rem 0 0.8rem; }
+    .nf p { color: var(--on-dark-muted); font-size: 1.08rem; margin-bottom: 2rem; }
+    .nf-links { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
+    .nf-route { width: min(420px, 80vw); margin: 1.5rem auto 0; }
+  </style>
+</head>
+<body class="hero on-dark" style="overflow:hidden;">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <main class="nf" style="position:relative;">
+    <div class="nf-inner">
+      <p class="eyebrow" style="justify-content:center;">Signal lost</p>
+      <div class="nf-code">4<span class="accent">0</span>4</div>
+      <h1>This vehicle has left the geofence</h1>
+      <p>The page you’re looking for isn’t on our map. Let’s get you back on a tracked route.</p>
+      <svg class="nf-route" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 90 C 110 90, 130 40, 220 40 S 360 70, 400 30" stroke="rgba(148,163,184,0.3)" stroke-width="3"/>
+        <path class="route-line" d="M20 90 C 110 90, 130 40, 220 40 S 360 70, 400 30" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="20" cy="90" r="6" fill="#2563EB"/>
+        <circle cx="220" cy="40" r="7" fill="#10B981"/>
+        <circle cx="220" cy="40" r="7" stroke="#6EE7B7" class="svg-ping"/>
+        <circle cx="400" cy="30" r="7" fill="#F97316"/>
+        <circle cx="400" cy="30" r="7" stroke="#FDBA74" class="svg-ping"/>
+      </svg>
+      <div class="nf-links">
+        <a class="btn btn-primary" href="/GPSBULL-Website/">Back to Home
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="/GPSBULL-Website/products.html">View Products</a>
+        <a class="btn btn-ghost" href="/GPSBULL-Website/contact.html">Contact Us</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amittandon255455-tech.github.io/GPSBULL-Website/sitemap.xml

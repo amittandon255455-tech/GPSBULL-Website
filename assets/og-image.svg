@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0A1628"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <defs>
+    <radialGradient id="glow" cx="78%" cy="6%" r="62%">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.34"/>
+      <stop offset="60%" stop-color="#2563EB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g stroke="rgba(148,163,184,0.08)" stroke-width="1">
+    <path d="M0 150H1200M0 300H1200M0 450H1200M200 0V630M400 0V630M600 0V630M800 0V630M1000 0V630"/>
+  </g>
+
+  <!-- route motif -->
+  <path d="M120 470 C 360 470, 420 250, 680 240 S 980 150, 1110 110" fill="none" stroke="rgba(148,163,184,0.30)" stroke-width="5"/>
+  <path d="M120 470 C 360 470, 420 250, 680 240 S 980 150, 1110 110" fill="none" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 16"/>
+  <circle cx="120" cy="470" r="46" fill="none" stroke="#5DCAA5" stroke-width="2" stroke-dasharray="7 8"/>
+  <circle cx="680" cy="240" r="11" fill="#10B981"/>
+  <circle cx="1110" cy="110" r="11" fill="#F97316"/>
+
+  <!-- brand lockup -->
+  <g transform="translate(96,96)">
+    <rect x="0" y="0" width="84" height="84" rx="22" fill="#2563EB"/>
+    <path d="M42 20c-10 0-17.8 7.6-17.8 17.3 0 12.9 17.8 29.3 17.8 29.3s17.8-16.4 17.8-29.3C59.8 27.6 52 20 42 20Z" fill="#F8FAFC"/>
+    <circle cx="42" cy="36.8" r="6.9" fill="#F97316"/>
+  </g>
+  <text x="200" y="130" font-family="'Lexend','Segoe UI',sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">GPS Bull</text>
+  <text x="202" y="166" font-family="'JetBrains Mono',monospace" font-size="19" letter-spacing="6" fill="#94A3B8">LOCATE · MONITOR · PROTECT</text>
+
+  <!-- headline -->
+  <text x="96" y="320" font-family="'Lexend','Segoe UI',sans-serif" font-size="62" font-weight="600" fill="#FFFFFF">AIS-140 GPS tracking</text>
+  <text x="96" y="392" font-family="'Lexend','Segoe UI',sans-serif" font-size="62" font-weight="600" fill="#FFFFFF">&amp; IoT telematics, <tspan fill="#F97316">built in India</tspan></text>
+  <text x="96" y="452" font-family="'Source Sans 3','Segoe UI',sans-serif" font-size="27" fill="#94A3B8">Trackers · OBD-CAN · Fare meters · Speed governors — 3,00,000+ deployed</text>
+
+  <!-- badges -->
+  <g font-family="'JetBrains Mono',monospace" font-size="18" fill="#BFDBFE">
+    <rect x="96" y="512" width="214" height="46" rx="23" fill="rgba(37,99,235,0.16)" stroke="rgba(59,130,246,0.4)"/>
+    <text x="121" y="541">ISO 9001:2015</text>
+    <rect x="326" y="512" width="262" height="46" rx="23" fill="rgba(37,99,235,0.16)" stroke="rgba(59,130,246,0.4)"/>
+    <text x="351" y="541">AIS-140 VLTD TAC</text>
+    <rect x="604" y="512" width="186" height="46" rx="23" fill="rgba(37,99,235,0.16)" stroke="rgba(59,130,246,0.4)"/>
+    <text x="629" y="541">CMMI Level 3</text>
+  </g>
+</svg>

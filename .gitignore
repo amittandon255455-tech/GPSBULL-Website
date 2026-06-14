@@ -1,6 +1,10 @@
 # Claude Code local config and skill data (not part of the website)
 .claude/
 
+# Node / build artifacts (e.g. one-off sharp install for OG image generation)
+node_modules/
+package-lock.json
+
 # OS cruft
 Thumbs.db
 desktop.ini
