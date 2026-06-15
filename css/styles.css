@@ -897,3 +897,68 @@ a.reveal:hover .card-link svg { transform: translateX(4px); }
 
 .text-link { font-weight: 600; }
 .text-link:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   Premium interaction layer (loaded by js/premium.js — desktop/fine-pointer
+   only, fully disabled under prefers-reduced-motion and on touch devices)
+   ========================================================================== */
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  z-index: 60;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Custom cursor ring */
+.premium-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 30px; height: 30px;
+  border: 1.5px solid rgba(37, 99, 235, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  transition: width .2s ease, height .2s ease, background-color .2s ease, border-color .2s ease;
+}
+.premium-cursor.is-hover {
+  width: 46px; height: 46px;
+  background: rgba(37, 99, 235, 0.10);
+  border-color: rgba(249, 115, 22, 0.7);
+}
+@media (pointer: coarse) { .premium-cursor { display: none; } }
+
+/* Tilt + magnetic helpers (transition managed so motion stays snappy) */
+.card.tilting, .cert-card.tilting { transition: box-shadow .28s ease, border-color .28s ease; will-change: transform; }
+
+/* Fleet-map hero HUD */
+.fleet-hud {
+  position: absolute;
+  left: 18px; bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(10, 22, 40, 0.72);
+  border: 1px solid var(--on-dark-border);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--on-dark);
+}
+.fleet-hud strong { font-family: var(--font-heading); font-weight: 600; color: #fff; }
+.fleet-hud .plus { color: var(--accent); }
+.fleet-map { width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { display: none; }
+}
